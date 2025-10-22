@@ -78,12 +78,18 @@ function animate() {
 }
 animate();
 
-// --- JavaScript Interactivity: Proposal Logic (UNCHANGED VARS) ---
+// --- JavaScript Interactivity: Proposal Logic ---
+// New Elements
+const introScreen = document.getElementById('intro-screen');
+const mainContent = document.getElementById('main-content');
+const continueButton = document.getElementById('continue-btn');
+
+// Existing Elements
 const surpriseButton = document.getElementById('surprise-btn');
 const initialMessage = document.getElementById('initial-msg');
 const finalMessage = document.getElementById('final-msg');
-const heading = document.getElementById('names'); // This is H2
-const coupleNameBox = document.getElementById('couple-name-box'); // New Box
+const heading = document.getElementById('names'); 
+const coupleNameBox = document.getElementById('couple-name-box'); 
 const loveMessageContainer = document.querySelector('.love-message');
 const buttonContainer = document.querySelector('.button-container');
 const yesButton = document.getElementById('yes-btn');
@@ -91,71 +97,91 @@ const funnyButton = document.getElementById('funny-btn');
 
 heading.style.visibility = 'hidden'; 
 
-// --- STEP 1: Reveal Proposal Message (Initial Click) ---
+// --- NEW STEP 0: Handle Continue Button Click (Stylish Transition FIXED) ---
+continueButton.addEventListener('click', () => {
+    // 💖 NEW TRANSITION EFFECT: Zoom out current screen
+    introScreen.style.animation = 'zoomOut 0.5s forwards';
+    continueButton.disabled = true;
+
+    setTimeout(() => {
+        introScreen.style.display = 'none';
+        
+        // **💖 FIX HERE: Ensure main-content starts hidden and transparent 💖**
+        mainContent.style.display = 'block';
+        mainContent.style.opacity = '0';
+        
+        // Apply the zoom-in animation to reveal the content
+        mainContent.style.animation = 'zoomIn 0.5s forwards';
+        
+    }, 500); // Wait for zoomOut animation to complete
+});
+
+// --- STEP 1: Reveal Proposal Message (Original First Click) ---
 surpriseButton.addEventListener('click', () => {
     
     surpriseButton.disabled = true; 
     
-    loveMessageContainer.style.transition = 'transform 0.5s ease-out, box-shadow 1s ease'; 
-    loveMessageContainer.style.transform = 'scale(1.05) perspective(1000px) rotateX(5deg)'; 
+    // Zoom out the current page content (smoother transition)
+    // We apply zoomOut to the whole main-content div
+    mainContent.style.animation = 'zoomOut 0.5s forwards';
     
-    surpriseButton.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    initialMessage.style.transition = 'opacity 0.5s ease';
-    
-    surpriseButton.style.opacity = '0';
-    surpriseButton.style.transform = 'translateY(20px)';
-    initialMessage.style.opacity = '0';
-
     setTimeout(() => {
-        loveMessageContainer.style.transform = 'scale(1) perspective(1000px) rotateX(5deg)'; 
+        // Clear main content animation and reset opacity for next steps
+        mainContent.style.animation = 'none';
+        mainContent.style.opacity = '1';
         
+        // Hide initial message elements
+        surpriseButton.style.display = 'none'; 
+        initialMessage.style.display = 'none'; 
+        
+        // 💖 UPDATED TEXT FOR PAGE 2 💖
+        finalMessage.innerHTML = `
+            <span style="font-size: 0.9em; display: block; margin-bottom: 15px; font-style: italic;">
+                From the moment I saw you, I felt something different.
+            </span>
+            <span style="font-size: 2.2em; font-weight: 900; color: #ff3333; display: block;">
+                MINAHIL SAHIBA
+            </span>
+            <span class="animated-like-you" style="font-size: 1.6em; margin-top: 10px;">
+                You truly inspire me — <br>and I admire you, a lot. 🌸
+            </span>
+            <span style="font-size: 1.4em; display: block; margin-top: 15px;">
+                Can we stay connected… as good friends? 😊
+            </span>
+        `;
+        finalMessage.style.color = 'white'; 
+        
+        // Show new content with zoom-in
+        finalMessage.style.opacity = '0';
+        finalMessage.style.display = 'block'; 
+        finalMessage.style.animation = 'zoomIn 0.5s forwards'; 
+        
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.opacity = '0';
         setTimeout(() => {
-            surpriseButton.style.display = 'none'; 
-            initialMessage.style.display = 'none'; 
-            
-            // 💖 UPDATED TEXT FOR PAGE 2 (Adjusted for better fit) 💖
-            finalMessage.innerHTML = `
-                <span style="font-size: 0.9em; display: block; margin-bottom: 15px; font-style: italic;">
-                    From the moment I saw you, I felt something different.
-                </span>
-                <span style="font-size: 2.2em; font-weight: 900; color: #ff3333; display: block;">
-                    MINAHIL SAHIBA
-                </span>
-                <span class="animated-like-you" style="font-size: 1.6em; margin-top: 10px;">
-                    You truly inspire me, <br>and I admire you, a lot. 🌸
-                </span>
-                <span style="font-size: 1.4em; display: block; margin-top: 15px;">
-                    Can we stay connected… as friends? 😊
-                </span>
-            `;
-            finalMessage.style.color = 'white'; 
-            
-            finalMessage.style.transition = 'opacity 3s ease 0.5s'; 
-            finalMessage.style.opacity = '1';
-
-            buttonContainer.style.display = 'flex';
-            buttonContainer.style.opacity = '0';
-            setTimeout(() => {
-                buttonContainer.style.transition = 'opacity 1s ease';
-                buttonContainer.style.opacity = '1';
-            }, 800);
-            
-        }, 500); 
-    }, 250); 
+            buttonContainer.style.transition = 'opacity 1s ease';
+            buttonContainer.style.opacity = '1';
+        }, 800);
+        
+    }, 500); 
 });
 
-// --- STEP 2: Celebrate on the Same Screen (After Yes/Funny Click) ---
+// --- STEP 2: Celebrate on the Same Screen (Stylish/Heart Animation) ---
 const celebrateInPlace = () => {
     
     yesButton.disabled = true;
     funnyButton.disabled = true;
-    finalMessage.style.opacity = '0';
+    
+    // Hide current content with zoom-out
+    finalMessage.style.animation = 'zoomOut 0.5s forwards';
     buttonContainer.style.opacity = '0';
     
+    // 💖 HEART/AMAZING ANIMATION START (Three.js Visual Update) 💖
     rotationSpeed = 0.005; 
     pulseMagnitude = 0.15; 
     material.size = 0.1; 
     
+    // Redden the particles for a more dramatic 'love' effect
     const redColor = new THREE.Color(0xff0000);
     const colorsArray = geometry.attributes.color.array;
     for (let i = 0; i < colorsArray.length; i += 3) {
@@ -164,6 +190,9 @@ const celebrateInPlace = () => {
         colorsArray[i + 2] = redColor.b;
     }
     geometry.attributes.color.needsUpdate = true; 
+    
+    // Increase the main box shadow glow for a 'heartbeat' look
+    loveMessageContainer.style.boxShadow = '0 0 100px rgba(255, 0, 0, 0.9), 0 0 40px rgba(255, 255, 255, 0.2)';
     
     
     setTimeout(() => {
@@ -178,7 +207,10 @@ const celebrateInPlace = () => {
         heading.style.transition = 'opacity 2s ease, font-size 1s ease';
 
         heading.style.visibility = 'visible'; 
-        heading.style.opacity = '1'; 
+        heading.style.opacity = '0'; 
+        
+        // Apply zoom-in animation to the names (H2)
+        heading.style.animation = 'zoomIn 0.5s forwards';
         
         heading.classList.add('celebration-text'); 
 
@@ -193,13 +225,12 @@ const celebrateInPlace = () => {
         finalCongrats.style.color = 'white';
         finalCongrats.style.opacity = '0';
         finalCongrats.id = 'final-congrats';
+        finalCongrats.style.animation = 'zoomIn 0.5s forwards'; // Apply zoom-in
         loveMessageContainer.appendChild(finalCongrats);
         
-        setTimeout(() => {
-            finalCongrats.style.transition = 'opacity 2s ease';
-            finalCongrats.style.opacity = '1';
-        }, 100);
-
+        // Ensure final elements have full opacity after animation (forwards)
+        heading.style.opacity = '1';
+        
     }, 500);
 };
 

@@ -11,25 +11,40 @@
     
     <div id="love-scene"></div>
 
-    <div class="love-message">
+    <div class="love-message" id="message-container">
         
-        <div id="couple-name-box" style="display: none; padding: 0 10px;">
-            <h2 id="names" style="opacity: 0;">
-                Aamir & Minahil Sahiba
-            </h2>
+        <div id="intro-screen" style="text-align: center;">
+            <p style="font-size: 2.2em; margin-bottom: 20px; font-style: normal; animation: shimmer 3s infinite;">
+                An amazing thought just crossed my mind.
+            </p>
+            <p style="font-size: 1.4em; font-style: italic; color: #ccc;">
+                Ready to unlock what's hidden?
+            </p>
+            <button id="continue-btn" class="special-btn" style="margin-top: 40px; animation: pulse 1.5s infinite;">
+                Continue
+            </button>
         </div>
         
-        <p id="initial-msg">I just wanted to say something, in a genuine way. 🗝️</p> 
-        
-        <p id="final-msg" style="opacity: 0; margin-top: 20px; font-style: normal;"></p>
+        <div id="main-content" style="display: none;">
+            
+            <div id="couple-name-box" style="display: none; padding: 0 10px;">
+                <h2 id="names" style="opacity: 0;">
+                    Aamir & Minahil Sahiba
+                </h2>
+            </div>
+            
+            <p id="initial-msg">I just wanted to say something, in a genuine way. 🗝️</p> 
+            
+            <p id="final-msg" style="opacity: 0; margin-top: 20px; font-style: normal;"></p>
 
-        <button id="surprise-btn">Unlock My Heart's Desire</button>
-        
-        <div class="button-container" style="display: none;">
-            <button id="yes-btn" class="proposal-btn">Yes!</button>
-            <button id="funny-btn" class="proposal-btn">Of Course, You Silly!</button>
+            <button id="surprise-btn">Unlock My Heart's Desire</button>
+            
+            <div class="button-container" style="display: none;">
+                <button id="yes-btn" class="proposal-btn">Yes!</button>
+                <button id="funny-btn" class="proposal-btn">Of Course, You Silly!</button>
+            </div>
+            
         </div>
-        
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
