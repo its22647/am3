@@ -1,10 +1,10 @@
 :root {
     /* 💖 DEEPER, MORE LUXURIOUS COLORS 💖 */
-    --primary-color: #990000; /* Darker Maroon for depth */
-    --secondary-color: #B54A4A; /* Slightly lighter Brownish Red */
-    --text-color: #ffffff; /* Pure white text for better contrast */
+    --primary-color: #990000; 
+    --secondary-color: #B54A4A; 
+    --text-color: #ffffff; 
     --bg-color: #1a1a1a; 
-    --highlight-red: #ff3333; /* Vibrant red for accent/glow */
+    --highlight-red: #ff3333; 
 }
 
 /* --- Screen Fix and Mobile Optimization (Perfect Alignment) --- */
@@ -25,7 +25,6 @@ body {
     display: flex; 
     justify-content: center;
     align-items: center; 
-    /* FIX: Added bottom padding to lift the box slightly from bottom edge */
     padding-bottom: 20px; 
 }
 
@@ -36,7 +35,9 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    box-shadow: inset 0 0 150px rgba(100, 0, 0, 0.7); 
+    /* 💖 FIX: Initial low redness in background shadow 💖 */
+    box-shadow: inset 0 0 50px rgba(100, 0, 0, 0.2); 
+    transition: box-shadow 1s ease; /* Added transition for smooth glow up */
 }
 
 /* Central message box */
@@ -44,10 +45,11 @@ body {
     position: relative;
     z-index: 10;
     text-align: center;
-    /* FIX: Vertical padding thora kam kiya */
     padding: 35px 60px;
     border-radius: 15px;
-    box-shadow: 0 0 70px rgba(255, 51, 51, 0.4), 0 0 20px rgba(255, 255, 255, 0.1); 
+    
+    /* 💖 FIX: Initial low redness in message box shadow 💖 */
+    box-shadow: 0 0 20px rgba(255, 51, 51, 0.1), 0 0 5px rgba(255, 255, 255, 0.05); 
     max-width: 90%; 
     
     transform: perspective(1000px) rotateX(5deg);
@@ -56,10 +58,11 @@ body {
     animation: fadeIn 3s ease-out, liftUp 4s ease-out;
     animation-delay: 0s, 0.5s; 
     
+    /* Reduced red opacity in gradient */
     background: 
-        radial-gradient(circle at center, rgba(165, 42, 42, 0.3) 0%, rgba(26, 26, 26, 0.98) 100%), 
+        radial-gradient(circle at center, rgba(165, 42, 42, 0.05) 0%, rgba(26, 26, 26, 0.98) 100%), 
         rgba(26, 26, 26, 0.98);
-    border: 1px solid rgba(165, 42, 42, 0.6); 
+    border: 1px solid rgba(165, 42, 42, 0.2); 
     
     display: flex;
     flex-direction: column;
@@ -69,7 +72,6 @@ body {
 
 /* Couple Name (Now H2) - Global Styles */
 h2 {
-    /* FIX: H2 font size for final page */
     font-size: 4em; 
     color: var(--primary-color);
     text-shadow: 0 0 20px var(--highlight-red), 0 0 8px var(--secondary-color);
@@ -107,9 +109,14 @@ p {
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     margin-top: 30px; 
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.7); 
+}
+
+/* PULSE ONLY ON BUTTONS AFTER INTRO */
+#surprise-btn, .proposal-btn {
     animation: pulse 2s infinite; 
 }
-/* New button hover/animation style */
+
+/* Hover effects (UNCHANGED) */
 .special-btn:hover {
     background-color: var(--primary-color);
     transform: scale(1.08); 
@@ -128,7 +135,7 @@ p {
     box-shadow: 0 0 30px var(--highlight-red); 
 }
 
-/* 💖 NEW: Gentle animation for "You truly inspire me" text 💖 */
+/* Gentle animation for "You truly inspire me" text */
 .animated-like-you {
     font-weight: bold;
     color: var(--highlight-red);
@@ -138,14 +145,15 @@ p {
     animation: heartBeatScale 1.5s infinite alternate;
 }
 
-/* 💖 FINAL TEXT GLOW UP */
+/* 💖 FINAL TEXT GLOW UP (Moving Animated Text) 💖 */
 .celebration-text {
     color: var(--highlight-red);
     text-shadow: 0 0 15px #ffffff, 0 0 5px var(--highlight-red);
-    animation: textGlow 1.5s infinite alternate, scaleText 2s infinite alternate;
+    /* NEW: Combining glow and subtle scale movement */
+    animation: textGlow 1.5s infinite alternate, scalePulse 2s infinite alternate; 
 }
 
-/* --- Cursor Heart Styles (for cursor-effect.js) --- */
+/* --- Cursor Heart Styles (UNCHANGED) --- */
 .heart-cursor {
     position: fixed;
     top: 0;
@@ -180,19 +188,21 @@ p {
     0% { text-shadow: 0 0 5px var(--highlight-red); }
     100% { text-shadow: 0 0 25px var(--highlight-red), 0 0 10px #fff; }
 }
-@keyframes shimmer {
-    0% { opacity: 0.95; }
-    50% { opacity: 1; }
-    100% { opacity: 0.95; }
+
+/* 💖 NEW KEYFRAME FOR FINAL NAME ANIMATION 💖 */
+@keyframes scalePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); } /* Subtle moving effect */
+    100% { transform: scale(1); }
 }
 
-/* 💖 NEW KEYFRAME: Subtle scale pulse for "I Like You" 💖 */
+/* Subtle scale pulse for "I Like You" */
 @keyframes heartBeatScale {
     0% { transform: scale(1); opacity: 0.9; }
     100% { transform: scale(1.03); opacity: 1; }
 }
 
-/* 💖 NEW TRANSITION KEYFRAMES 💖 */
+/* NEW TRANSITION KEYFRAMES (Zoom Effect for all pages) */
 @keyframes zoomOut {
     0% { transform: scale(1); opacity: 1; }
     100% { transform: scale(0.8); opacity: 0; }
@@ -209,11 +219,10 @@ p {
         cursor: default; 
     }
     .love-message {
-        /* FIX: Reduced overall padding on mobile (smaller box) */
         padding: 25px 15px; 
         max-width: 90%; 
         transform: none; 
-        box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+        box-shadow: 0 0 30px rgba(255, 0, 0, 0.2); 
         animation: fadeIn 3s ease-out; 
     }
     
@@ -225,7 +234,6 @@ p {
     }
     
     p {
-        /* FIX: Increased font size slightly so new intro text is visible */
         font-size: 1.2em; 
         margin-top: 15px;
         margin-bottom: 15px;

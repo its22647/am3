@@ -1,11 +1,11 @@
-// --- Three.js 3D Deep Love Scene Setup (UNCHANGED) ---
+// --- Three.js 3D Deep Love Scene Setup ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-document.getElementById('love-scene').appendChild(renderer.domElement);
+const loveSceneDiv = document.getElementById('love-scene');
+loveSceneDiv.appendChild(renderer.domElement);
 
-// Screen resize handler (UNCHANGED)
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -57,34 +57,36 @@ camera.position.z = 8;
 let scaleFactor = 1.0; 
 let scaleDirection = 0.0015;
 
-// Animation variables for dynamic change (UNCHANGED)
+// Animation variables for dynamic change
 let rotationSpeed = 0.001; 
 let pulseMagnitude = 0.05; 
 
-// Animation Loop: Smooth Heartbeat Motion (UNCHANGED)
+// FIX: Control for background animation on the intro screen
+let isIntro = true; 
+
+// Animation Loop: Smooth Heartbeat Motion
 function animate() {
     requestAnimationFrame(animate);
 
-    loveOrb.rotation.x += rotationSpeed / 2;
-    loveOrb.rotation.y += rotationSpeed;
+    if (!isIntro) { // Only animate if not on the intro screen
+        loveOrb.rotation.x += rotationSpeed / 2;
+        loveOrb.rotation.y += rotationSpeed;
 
-    scaleFactor += scaleDirection;
-    if (scaleFactor > 1 + pulseMagnitude || scaleFactor < 1 - pulseMagnitude) {
-        scaleDirection = -scaleDirection; 
+        scaleFactor += scaleDirection;
+        if (scaleFactor > 1 + pulseMagnitude || scaleFactor < 1 - pulseMagnitude) {
+            scaleDirection = -scaleDirection; 
+        }
+        loveOrb.scale.set(scaleFactor, scaleFactor, scaleFactor);
     }
-    loveOrb.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
     renderer.render(scene, camera);
 }
 animate();
 
 // --- JavaScript Interactivity: Proposal Logic ---
-// New Elements
 const introScreen = document.getElementById('intro-screen');
 const mainContent = document.getElementById('main-content');
 const continueButton = document.getElementById('continue-btn');
-
-// Existing Elements
 const surpriseButton = document.getElementById('surprise-btn');
 const initialMessage = document.getElementById('initial-msg');
 const finalMessage = document.getElementById('final-msg');
@@ -97,36 +99,54 @@ const funnyButton = document.getElementById('funny-btn');
 
 heading.style.visibility = 'hidden'; 
 
-// --- NEW STEP 0: Handle Continue Button Click (Stylish Transition FIXED) ---
+// 💖 FUNCTION TO INCREASE GLOW AFTER INTRO 💖
+const increaseGlow = () => {
+    // 1. Full Redness/Glow on Background
+    loveSceneDiv.style.boxShadow = 'inset 0 0 150px rgba(100, 0, 0, 0.7)';
+    
+    // 2. Full Redness/Glow on Message Box
+    loveMessageContainer.style.boxShadow = '0 0 70px rgba(255, 51, 51, 0.4), 0 0 20px rgba(255, 255, 255, 0.1)';
+    loveMessageContainer.style.background = `
+        radial-gradient(circle at center, rgba(165, 42, 42, 0.3) 0%, rgba(26, 26, 26, 0.98) 100%), 
+        rgba(26, 26, 26, 0.98)`;
+    loveMessageContainer.style.border = '1px solid rgba(165, 42, 42, 0.6)';
+}
+
+
+// --- STEP 0: Handle Continue Button Click (Amazing/Same Transition & Background Start) ---
 continueButton.addEventListener('click', () => {
-    // 💖 NEW TRANSITION EFFECT: Zoom out current screen
+    // FIX 2: Start the background animation
+    isIntro = false;
+    
+    // 💖 NEW: Increase glow/redness for subsequent pages 💖
+    increaseGlow();
+    
+    // TRANSITION 1: Zoom out current screen
     introScreen.style.animation = 'zoomOut 0.5s forwards';
     continueButton.disabled = true;
 
     setTimeout(() => {
         introScreen.style.display = 'none';
         
-        // **💖 FIX HERE: Ensure main-content starts hidden and transparent 💖**
         mainContent.style.display = 'block';
-        mainContent.style.opacity = '0';
+        mainContent.style.opacity = '0'; // Start transparent
         
-        // Apply the zoom-in animation to reveal the content
+        // TRANSITION 2: Zoom in next screen
         mainContent.style.animation = 'zoomIn 0.5s forwards';
         
-    }, 500); // Wait for zoomOut animation to complete
+    }, 500); 
 });
 
-// --- STEP 1: Reveal Proposal Message (Original First Click) ---
+// --- STEP 1: Reveal Proposal Message (Amazing/Same Transition) ---
 surpriseButton.addEventListener('click', () => {
     
     surpriseButton.disabled = true; 
     
-    // Zoom out the current page content (smoother transition)
-    // We apply zoomOut to the whole main-content div
+    // TRANSITION 3: Zoom out current page content
     mainContent.style.animation = 'zoomOut 0.5s forwards';
     
     setTimeout(() => {
-        // Clear main content animation and reset opacity for next steps
+        // Reset main-content styles
         mainContent.style.animation = 'none';
         mainContent.style.opacity = '1';
         
@@ -134,7 +154,7 @@ surpriseButton.addEventListener('click', () => {
         surpriseButton.style.display = 'none'; 
         initialMessage.style.display = 'none'; 
         
-        // 💖 UPDATED TEXT FOR PAGE 2 💖
+        // UPDATED TEXT FOR PAGE 2 (Proposal)
         finalMessage.innerHTML = `
             <span style="font-size: 0.9em; display: block; margin-bottom: 15px; font-style: italic;">
                 From the moment I saw you, I felt something different.
@@ -151,9 +171,11 @@ surpriseButton.addEventListener('click', () => {
         `;
         finalMessage.style.color = 'white'; 
         
-        // Show new content with zoom-in
+        // Prepare new content for zoom-in
         finalMessage.style.opacity = '0';
         finalMessage.style.display = 'block'; 
+        
+        // TRANSITION 4: Zoom in new message
         finalMessage.style.animation = 'zoomIn 0.5s forwards'; 
         
         buttonContainer.style.display = 'flex';
@@ -166,17 +188,17 @@ surpriseButton.addEventListener('click', () => {
     }, 500); 
 });
 
-// --- STEP 2: Celebrate on the Same Screen (Stylish/Heart Animation) ---
+// --- STEP 2: Celebrate on the Same Screen (HEART/AMAZING ANIMATION) ---
 const celebrateInPlace = () => {
     
     yesButton.disabled = true;
     funnyButton.disabled = true;
     
-    // Hide current content with zoom-out
+    // TRANSITION 5: Zoom out proposal content
     finalMessage.style.animation = 'zoomOut 0.5s forwards';
     buttonContainer.style.opacity = '0';
     
-    // 💖 HEART/AMAZING ANIMATION START (Three.js Visual Update) 💖
+    // 💖 HEART/AMAZING ANIMATION START (Three.js Visual Update - The 'Dil Wala' Effect) 💖
     rotationSpeed = 0.005; 
     pulseMagnitude = 0.15; 
     material.size = 0.1; 
@@ -191,7 +213,7 @@ const celebrateInPlace = () => {
     }
     geometry.attributes.color.needsUpdate = true; 
     
-    // Increase the main box shadow glow for a 'heartbeat' look
+    // Increase the main box shadow glow for a 'heartbeat' look (Keep full glow)
     loveMessageContainer.style.boxShadow = '0 0 100px rgba(255, 0, 0, 0.9), 0 0 40px rgba(255, 255, 255, 0.2)';
     
     
@@ -201,7 +223,7 @@ const celebrateInPlace = () => {
         
         coupleNameBox.style.display = 'block';
         
-        // 💖 FINAL PAGE: Show "Aamir & Minahil Sahiba" (split for fit) 💖
+        // FINAL PAGE: Show "Aamir & Minahil Sahiba" 
         heading.innerHTML = "Aamir & <br> Minahil Sahiba";
         heading.style.fontSize = '4em'; 
         heading.style.transition = 'opacity 2s ease, font-size 1s ease';
@@ -209,12 +231,13 @@ const celebrateInPlace = () => {
         heading.style.visibility = 'visible'; 
         heading.style.opacity = '0'; 
         
-        // Apply zoom-in animation to the names (H2)
+        // TRANSITION 6: Zoom in the FINAL NAMES
         heading.style.animation = 'zoomIn 0.5s forwards';
         
+        // 💖 ANIMATED TEXT GLOW AND MOVING EFFECT APPLIED (FIXED) 💖
         heading.classList.add('celebration-text'); 
 
-        // 💖 UPDATED CONGRATS MESSAGE FOR PAGE 3 💖
+        // UPDATED CONGRATS MESSAGE FOR PAGE 3 
         const finalCongrats = document.createElement('p');
         finalCongrats.innerHTML = `
             <span class="heart-emoji">💖</span> Grateful for this beautiful connection.
