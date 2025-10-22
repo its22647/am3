@@ -1,4 +1,4 @@
-// --- Three.js 3D Deep Love Scene Setup ---
+// --- Three.js 3D Deep Love Scene Setup (RESTORED & OPTIMIZED) ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -17,7 +17,7 @@ const spotLight = new THREE.SpotLight(0xffffff, 50, 100, Math.PI / 4, 0.5, 2);
 spotLight.position.set(0, 0, 10);
 scene.add(spotLight);
 
-// Creating the "Pulsating Heart Energy" (UNCHANGED)
+// Creating the "Pulsating Heart Energy" 
 const particleCount = 2000;
 const radius = 5;
 const geometry = new THREE.BufferGeometry();
@@ -47,7 +47,8 @@ const material = new THREE.PointsMaterial({
     sizeAttenuation: true,
     blending: THREE.AdditiveBlending,
     transparent: true,
-    opacity: 0.9
+    // 💖 OPTIMIZATION: Start with very low opacity to minimize lag on Intro 💖
+    opacity: 0.01 
 });
 
 const loveOrb = new THREE.Points(geometry, material);
@@ -57,26 +58,28 @@ camera.position.z = 8;
 let scaleFactor = 1.0; 
 let scaleDirection = 0.0015;
 
-// Animation variables for dynamic change
+// Animation variables
 let rotationSpeed = 0.001; 
 let pulseMagnitude = 0.05; 
-
-// FIX: Control for background animation on the intro screen
-let isIntro = true; 
 
 // Animation Loop: Smooth Heartbeat Motion
 function animate() {
     requestAnimationFrame(animate);
+    
+    // Rotation and scale continue even on intro, but opacity is low.
+    loveOrb.rotation.x += rotationSpeed / 2;
+    loveOrb.rotation.y += rotationSpeed;
 
-    if (!isIntro) { // Only animate if not on the intro screen
-        loveOrb.rotation.x += rotationSpeed / 2;
-        loveOrb.rotation.y += rotationSpeed;
-
-        scaleFactor += scaleDirection;
-        if (scaleFactor > 1 + pulseMagnitude || scaleFactor < 1 - pulseMagnitude) {
-            scaleDirection = -scaleDirection; 
-        }
-        loveOrb.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    scaleFactor += scaleDirection;
+    if (scaleFactor > 1 + pulseMagnitude || scaleFactor < 1 - pulseMagnitude) {
+        scaleDirection = -scaleDirection; 
+    }
+    loveOrb.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    
+    // 💖 FIX: Slowly fade in opacity after it's activated (after intro) 💖
+    if (material.opacity < 0.9 && material.opacity > 0.1) {
+        material.opacity += 0.005; // Gentle fade
+        material.needsUpdate = true;
     }
 
     renderer.render(scene, camera);
@@ -110,15 +113,16 @@ const increaseGlow = () => {
         radial-gradient(circle at center, rgba(165, 42, 42, 0.3) 0%, rgba(26, 26, 26, 0.98) 100%), 
         rgba(26, 26, 26, 0.98)`;
     loveMessageContainer.style.border = '1px solid rgba(165, 42, 42, 0.6)';
+
+    // 💖 FIX: Start Three.js particle fade-in 💖
+    material.opacity = 0.3; // Start fade-in here
+    material.needsUpdate = true;
 }
 
 
-// --- STEP 0: Handle Continue Button Click (Amazing/Same Transition & Background Start) ---
+// --- STEP 0: Handle Continue Button Click (Amazing/Same Transition & Full Glow Start) ---
 continueButton.addEventListener('click', () => {
-    // FIX 2: Start the background animation
-    isIntro = false;
     
-    // 💖 NEW: Increase glow/redness for subsequent pages 💖
     increaseGlow();
     
     // TRANSITION 1: Zoom out current screen
@@ -137,20 +141,16 @@ continueButton.addEventListener('click', () => {
     }, 500); 
 });
 
-// --- STEP 1: Reveal Proposal Message (Amazing/Same Transition) ---
+// --- STEP 1: Reveal Proposal Message (UNCHANGED, but colors adjusted via CSS variables) ---
 surpriseButton.addEventListener('click', () => {
     
     surpriseButton.disabled = true; 
-    
-    // TRANSITION 3: Zoom out current page content
     mainContent.style.animation = 'zoomOut 0.5s forwards';
     
     setTimeout(() => {
-        // Reset main-content styles
         mainContent.style.animation = 'none';
         mainContent.style.opacity = '1';
         
-        // Hide initial message elements
         surpriseButton.style.display = 'none'; 
         initialMessage.style.display = 'none'; 
         
@@ -159,7 +159,7 @@ surpriseButton.addEventListener('click', () => {
             <span style="font-size: 0.9em; display: block; margin-bottom: 15px; font-style: italic;">
                 From the moment I saw you, I felt something different.
             </span>
-            <span style="font-size: 2.2em; font-weight: 900; color: #ff3333; display: block;">
+            <span style="font-size: 2.2em; font-weight: 900; color: var(--highlight-red); display: block;">
                 MINAHIL SAHIBA
             </span>
             <span class="animated-like-you" style="font-size: 1.6em; margin-top: 10px;">
@@ -171,11 +171,9 @@ surpriseButton.addEventListener('click', () => {
         `;
         finalMessage.style.color = 'white'; 
         
-        // Prepare new content for zoom-in
         finalMessage.style.opacity = '0';
         finalMessage.style.display = 'block'; 
         
-        // TRANSITION 4: Zoom in new message
         finalMessage.style.animation = 'zoomIn 0.5s forwards'; 
         
         buttonContainer.style.display = 'flex';
@@ -188,7 +186,7 @@ surpriseButton.addEventListener('click', () => {
     }, 500); 
 });
 
-// --- STEP 2: Celebrate on the Same Screen (HEART/AMAZING ANIMATION) ---
+// --- STEP 2: Celebrate on the Same Screen (FINAL ANIMATION) ---
 const celebrateInPlace = () => {
     
     yesButton.disabled = true;
@@ -198,12 +196,11 @@ const celebrateInPlace = () => {
     finalMessage.style.animation = 'zoomOut 0.5s forwards';
     buttonContainer.style.opacity = '0';
     
-    // 💖 HEART/AMAZING ANIMATION START (Three.js Visual Update - The 'Dil Wala' Effect) 💖
+    // 💖 Three.js Visual Update (Dil Wala Effect - Full Redness/Pulse) 💖
     rotationSpeed = 0.005; 
     pulseMagnitude = 0.15; 
     material.size = 0.1; 
     
-    // Redden the particles for a more dramatic 'love' effect
     const redColor = new THREE.Color(0xff0000);
     const colorsArray = geometry.attributes.color.array;
     for (let i = 0; i < colorsArray.length; i += 3) {
@@ -213,7 +210,7 @@ const celebrateInPlace = () => {
     }
     geometry.attributes.color.needsUpdate = true; 
     
-    // Increase the main box shadow glow for a 'heartbeat' look (Keep full glow)
+    // Increase the main box shadow glow for a 'heartbeat' look
     loveMessageContainer.style.boxShadow = '0 0 100px rgba(255, 0, 0, 0.9), 0 0 40px rgba(255, 255, 255, 0.2)';
     
     
@@ -240,7 +237,7 @@ const celebrateInPlace = () => {
         // UPDATED CONGRATS MESSAGE FOR PAGE 3 
         const finalCongrats = document.createElement('p');
         finalCongrats.innerHTML = `
-            <span class="heart-emoji">💖</span> Grateful for this beautiful connection.
+            <span style="color: var(--highlight-red);">💖</span> Grateful for this beautiful connection.
             <br> Some people just make life brighter. ✨
         `;
         finalCongrats.style.fontSize = '2em'; 

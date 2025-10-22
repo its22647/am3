@@ -1,10 +1,11 @@
 :root {
-    /* 💖 DEEPER, MORE LUXURIOUS COLORS 💖 */
-    --primary-color: #990000; 
-    --secondary-color: #B54A4A; 
+    /* 💖 RESTORED: ORIGINAL MAROON/RED COLORS 💖 */
+    --primary-color: #990000; /* Darker Maroon for depth */
+    --secondary-color: #B54A4A; /* Slightly lighter Brownish Red */
     --text-color: #ffffff; 
     --bg-color: #1a1a1a; 
-    --highlight-red: #ff3333; 
+    --highlight-red: #ff3333; /* Vibrant red for accent/glow */
+    --accent-glow: #ffffff; /* Pure white for better contrast/glow */
 }
 
 /* --- Screen Fix and Mobile Optimization (Perfect Alignment) --- */
@@ -12,6 +13,7 @@ html, body {
     height: 100%; 
     -webkit-font-smoothing: antialiased; 
     -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none; 
 }
 
 body {
@@ -20,7 +22,6 @@ body {
     font-family: 'Playfair Display', 'Georgia', serif; 
     
     background-color: var(--bg-color);
-    overflow: hidden; 
     color: var(--text-color);
     display: flex; 
     justify-content: center;
@@ -28,6 +29,7 @@ body {
     padding-bottom: 20px; 
 }
 
+/* 💖 LOW GLOW FOR INTRO SCREEN (Optimized) 💖 */
 #love-scene {
     position: fixed;
     top: 0;
@@ -35,9 +37,9 @@ body {
     width: 100%;
     height: 100%;
     z-index: 1;
-    /* 💖 FIX: Initial low redness in background shadow 💖 */
-    box-shadow: inset 0 0 50px rgba(100, 0, 0, 0.2); 
-    transition: box-shadow 1s ease; /* Added transition for smooth glow up */
+    /* Very low glow for minimal visual impact on intro */
+    box-shadow: inset 0 0 10px rgba(100, 0, 0, 0.1); 
+    transition: box-shadow 1s ease; 
 }
 
 /* Central message box */
@@ -48,8 +50,8 @@ body {
     padding: 35px 60px;
     border-radius: 15px;
     
-    /* 💖 FIX: Initial low redness in message box shadow 💖 */
-    box-shadow: 0 0 20px rgba(255, 51, 51, 0.1), 0 0 5px rgba(255, 255, 255, 0.05); 
+    /* LOW GLOW FOR INTRO SCREEN */
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.05); 
     max-width: 90%; 
     
     transform: perspective(1000px) rotateX(5deg);
@@ -58,11 +60,8 @@ body {
     animation: fadeIn 3s ease-out, liftUp 4s ease-out;
     animation-delay: 0s, 0.5s; 
     
-    /* Reduced red opacity in gradient */
-    background: 
-        radial-gradient(circle at center, rgba(165, 42, 42, 0.05) 0%, rgba(26, 26, 26, 0.98) 100%), 
-        rgba(26, 26, 26, 0.98);
-    border: 1px solid rgba(165, 42, 42, 0.2); 
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.05); 
     
     display: flex;
     flex-direction: column;
@@ -73,8 +72,9 @@ body {
 /* Couple Name (Now H2) - Global Styles */
 h2 {
     font-size: 4em; 
-    color: var(--primary-color);
-    text-shadow: 0 0 20px var(--highlight-red), 0 0 8px var(--secondary-color);
+    /* RESTORED COLOR */
+    color: var(--highlight-red); 
+    text-shadow: 0 0 20px var(--highlight-red), 0 0 8px var(--primary-color);
     letter-spacing: 2px; 
     margin-top: 0; 
     margin-bottom: 0.1em; 
@@ -99,7 +99,8 @@ p {
 /* Initial Button & Final Buttons (common styles) */
 #surprise-btn, .proposal-btn, .special-btn {
     padding: 15px 30px;
-    background-color: var(--secondary-color);
+    /* RESTORED COLOR */
+    background-color: var(--secondary-color); 
     color: white;
     border: none;
     border-radius: 5px;
@@ -116,9 +117,10 @@ p {
     animation: pulse 2s infinite; 
 }
 
-/* Hover effects (UNCHANGED) */
+/* Hover effects */
 .special-btn:hover {
-    background-color: var(--primary-color);
+    /* RESTORED COLOR */
+    background-color: var(--primary-color); 
     transform: scale(1.08); 
     box-shadow: 0 0 30px var(--highlight-red); 
 }
@@ -130,7 +132,8 @@ p {
     gap: 20px;
 }
 .proposal-btn:hover {
-    background-color: var(--primary-color);
+    /* RESTORED COLOR */
+    background-color: var(--primary-color); 
     transform: scale(1.08); 
     box-shadow: 0 0 30px var(--highlight-red); 
 }
@@ -138,18 +141,20 @@ p {
 /* Gentle animation for "You truly inspire me" text */
 .animated-like-you {
     font-weight: bold;
-    color: var(--highlight-red);
+    /* RESTORED COLOR */
+    color: var(--highlight-red); 
     display: block;
     margin-top: 5px;
     margin-bottom: 10px;
     animation: heartBeatScale 1.5s infinite alternate;
 }
 
-/* 💖 FINAL TEXT GLOW UP (Moving Animated Text) 💖 */
+/* 💖 FINAL TEXT GLOW UP (Moving Animated Text FIX - using original colors) 💖 */
 .celebration-text {
-    color: var(--highlight-red);
-    text-shadow: 0 0 15px #ffffff, 0 0 5px var(--highlight-red);
-    /* NEW: Combining glow and subtle scale movement */
+    /* RESTORED COLOR */
+    color: var(--highlight-red); 
+    /* FIX: Better glow colors (original red/white glow) */
+    text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--highlight-red);
     animation: textGlow 1.5s infinite alternate, scalePulse 2s infinite alternate; 
 }
 
@@ -184,16 +189,17 @@ p {
     70% { box-shadow: 0 0 0 25px rgba(165, 42, 42, 0); }
     100% { box-shadow: 0 0 0 0 rgba(165, 42, 42, 0); }
 }
+/* 💖 TEXT GLOW FIX - using original colors 💖 */
 @keyframes textGlow {
     0% { text-shadow: 0 0 5px var(--highlight-red); }
-    100% { text-shadow: 0 0 25px var(--highlight-red), 0 0 10px #fff; }
+    100% { text-shadow: 0 0 25px var(--accent-glow), 0 0 10px var(--highlight-red); }
 }
 
-/* 💖 NEW KEYFRAME FOR FINAL NAME ANIMATION 💖 */
+/* 💖 MOVING EFFECT KEYFRAME CONFIRMED 💖 */
 @keyframes scalePulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); } /* Subtle moving effect */
-    100% { transform: scale(1); }
+    0% { transform: scale(1) translateY(0); }
+    50% { transform: scale(1.03) translateY(-2px); } 
+    100% { transform: scale(1) translateY(0); }
 }
 
 /* Subtle scale pulse for "I Like You" */
@@ -222,7 +228,7 @@ p {
         padding: 25px 15px; 
         max-width: 90%; 
         transform: none; 
-        box-shadow: 0 0 30px rgba(255, 0, 0, 0.2); 
+        box-shadow: none; /* Clean on mobile intro */
         animation: fadeIn 3s ease-out; 
     }
     
